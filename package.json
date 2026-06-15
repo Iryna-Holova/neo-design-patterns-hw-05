@@ -1,9 +1,11 @@
 {
   "name": "neo-design-patterns-hw-05",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "ts-node main.ts"
   },
   "repository": {
     "type": "git",
@@ -16,7 +18,7 @@
     "url": "https://github.com/Iryna-Holova/neo-design-patterns-hw-05/issues"
   },
   "homepage": "https://github.com/Iryna-Holova/neo-design-patterns-hw-05#readme",
-  "description": "",
+  "description": "Directory analysis utility using Facade and Adapter patterns",
   "devDependencies": {
     "@types/node": "^25.9.3",
     "ts-node": "^10.9.2",
