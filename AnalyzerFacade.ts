@@ -1,7 +1,6 @@
-import { DirectoryAnalyzer } from "./DirectoryAnalyzer";
-import { ReportAdapter } from "./ReportAdapter";
+import { DirectoryAnalyzer } from './DirectoryAnalyzer';
+import { ReportAdapter } from './ReportAdapter';
 
-// Патерн Фасад: спрощує роботу з аналізатором та адаптером
 export class AnalyzerFacade {
   private analyzer: DirectoryAnalyzer;
   private adapter: ReportAdapter;
@@ -12,6 +11,7 @@ export class AnalyzerFacade {
   }
 
   generateReport(path: string): string {
-    // TODO
+    const report = this.analyzer.analyze(path);
+    return this.adapter.export(report);
   }
 }

@@ -32,7 +32,6 @@
 У проекті реалізовано два рівні фасадів:
 
 1. **AnalyzerFacade** (низькорівневий фасад):
-
    - Приховує складність роботи з DirectoryAnalyzer
    - Координує взаємодію між аналізатором та адаптером
    - Надає простий метод generateReport()
@@ -93,9 +92,9 @@ npm start ./path/to/directory csv
 
 Звіти зберігаються в директорії `reports` з іменами виду:
 
-- `report-2024-02-20T12-34-56-789Z.json`
-- `report-2024-02-20T12-34-56-789Z.xml`
-- `report-2024-02-20T12-34-56-789Z.csv`
+- `report-2026-06-15T17-15-53-498Z.json`
+- `report-2026-06-15T17-17-38-692Z.xml`
+- `report-2026-06-15T17-18-23-709Z.csv`
 
 Кожен звіт містить:
 
@@ -103,3 +102,153 @@ npm start ./path/to/directory csv
 - Кількість директорій
 - Загальний розмір файлів
 - Статистику по розширеннях файлів
+
+### Приклад виконання
+
+```bash
+$ npx ts-node main.ts "D:\react_native" csv
+Report generated successfully: reports\report-2026-06-15T17-18-23-709Z.csv
+```
+
+### Приклади формату виводу
+
+[**JSON формат:**](./reports/report-2026-06-15T17-15-53-498Z.json)
+
+```json
+{
+  "files": 127329,
+  "directories": 22371,
+  "totalSize": 1236116727,
+  "extensions": {
+    "": 3947,
+    ".json": 4593,
+    ".md": 4603,
+    ".sample": 42,
+    ".js": 41686,
+    ".ttf": 67,
+    ".svg": 850,
+    ...
+  }
+}
+```
+
+[**CSV формат:**](./reports/report-2026-06-15T17-18-23-709Z.csv)
+
+```
+Metric,Value
+Total Files,127329
+Total Directories,22371
+Total Size (bytes),1236116727
+
+Extension,Count
+,3947
+.json,4593
+.md,4603
+.sample,42
+.js,41686
+.ttf,67
+.svg,850
+...
+```
+
+[**XML формат:**](./reports/report-2026-06-15T17-17-38-692Z.xml)
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+  <files>127329</files>
+  <directories>22371</directories>
+  <totalSize>1236116727</totalSize>
+  <extensions>
+    <extension name="" count="3947"/>
+    <extension name=".json" count="4593"/>
+    <extension name=".md" count="4603"/>
+    <extension name=".sample" count="42"/>
+    <extension name=".js" count="41686"/>
+    <extension name=".ttf" count="67"/>
+    <extension name=".svg" count="850"/>
+    ...
+  </extensions>
+</report>
+```
+
+## Побудова та типізація
+
+Проект використовує TypeScript з налаштуваннями:
+
+- `strict: true` — перевірка типів у всіх аспектах
+- `@types/node` — типи для Node.js API (`fs`, `path`, `process`)
+- `tsconfig.json` з явним включенням типів: `"types": ["node"]`
+
+Команди:
+
+```bash
+# Компіляція
+npm run build
+
+# Запуск через ts-node (з гарячою перезагрузкою)
+npm start
+```
+
+## Обробка помилок
+
+### Синтаксис команди
+
+```bash
+npx ts-node main.ts <path> <format>
+```
+
+- `<path>` — абсолютний або відносний шлях до директорії
+- `<format>` — один з: `json`, `csv`, `xml` (за замовчуванням: `json`)
+
+### Приклади помилок
+
+**Невідомий формат:**
+
+```bash
+$ npx ts-node main.ts "D:\react_native" cku
+Error: Unsupported format: cku
+Supported formats: json, csv, xml
+Usage: npx ts-node main.ts <path> <format>
+```
+
+**Директорія не існує:**
+
+```bash
+$ npx ts-node main.ts "D:\react_na" csv
+Error: ENOENT: no such file or directory, stat 'D:\react_na'
+Supported formats: json, csv, xml
+Usage: npx ts-node main.ts <path> <format>
+```
+
+**Шлях не є директорією**
+
+```bash
+$ npx ts-node main.ts "D:\react_native\neoversityApp\app.json" csv
+Error: Path is not a directory: D:\react_native\neoversityApp\app.json
+Supported formats: json, csv, xml
+Usage: npx ts-node main.ts <path> <format>
+```
+
+### Успішне виконання
+
+```bash
+$ npx ts-node main.ts "D:\react_native" csv
+Report generated successfully: reports\report-2026-06-15T17-18-23-709Z.csv
+```
+
+## Архітектура
+
+Проект демонструє застосування двох структурних патернів:
+
+### Фасад (Facade)
+
+- Скриває складність системи за простим інтерфейсом
+- `AnalyzerFacade` — координує аналіз та форматування
+- `ReportManager` — керує всіма етапами: вибір формату, генерація, збереження
+
+### Адаптер (Adapter)
+
+- Забезпечує єдиний інтерфейс `ReportAdapter` для різних форматів
+- Дозволяє легко додавати нові формати без змін в іншому коді
+- Поточні адаптери: JSON, CSV, XML
