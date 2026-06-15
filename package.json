@@ -1,0 +1,25 @@
+{
+  "name": "neo-design-patterns-hw-05",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iryna-Holova/neo-design-patterns-hw-05.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Iryna-Holova/neo-design-patterns-hw-05/issues"
+  },
+  "homepage": "https://github.com/Iryna-Holova/neo-design-patterns-hw-05#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
